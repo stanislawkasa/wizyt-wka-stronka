@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stanisław Jasiński - Kontakt</title>
     <style>
-        /* BRUTALIST RESET & VARIABLES (WHITE THEME) */
+        /* BRUTALIST RESET & VARIABLES */
         :root {
             --bg: #ffffff;
             --main-text: #000000;
-            --accent: #e60000; /* Mocna, brutalistyczna czerwień */
+            --accent: #e60000;
             --border-width: 4px;
         }
 
@@ -27,7 +27,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            /* Delikatny szum z tła dla faktury */
             background-image: radial-gradient(#ddd 1px, transparent 1px);
             background-size: 20px 20px;
         }
@@ -35,7 +34,7 @@
         /* TOP 3D SECTION */
         .interactive-zone {
             position: relative;
-            height: 66vh; 
+            height: 75vh; 
             width: 100%;
             overflow: hidden;
             border-bottom: var(--border-width) solid #000;
@@ -53,49 +52,48 @@
             top: 50%;
             width: 0;
             height: 0;
-            perspective: 1000px;
+            perspective: 1200px;
         }
 
         /* CENTER PHOTO */
         .center-photo {
             position: absolute;
-            height: 60vh;
-            max-height: 100%;
+            height: 65vh;
+            max-height: 90%;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: 5; 
-            filter: drop-shadow(10px 10px 0px var(--accent));
+            filter: drop-shadow(12px 12px 0px var(--accent));
             pointer-events: none; 
-            display: block;
+            user-select: none;
         }
 
         /* ORBITING TILES */
         .tile {
             position: absolute;
-            width: 8vh;
-            height: 8vh;
-            min-width: 55px;
-            min-height: 55px;
+            width: 70px;
+            height: 70px;
             display: flex;
             justify-content: center;
             align-items: center;
             border: 3px solid #000;
             text-decoration: none;
-            transition: transform 0.1s;
             cursor: pointer;
             box-shadow: 4px 4px 0 #000;
+            z-index: 2;
+            transition: box-shadow 0.2s, background-color 0.2s;
         }
 
         .tile svg {
-            width: 50%;
-            height: 50%;
+            width: 55%;
+            height: 55%;
             fill: currentColor;
         }
 
         .tile:hover {
             box-shadow: 6px 6px 0 var(--accent);
-            transform: scale(1.1) !important; 
+            z-index: 100 !important;
         }
 
         /* MAGNETS */
@@ -105,177 +103,167 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
-            padding: 15px;
-            z-index: 100; 
-            pointer-events: none; 
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            z-index: 20; 
         }
 
         .magnets-left { left: 0; }
         .magnets-right { right: 0; align-items: flex-end; }
 
         .magnet {
-            pointer-events: auto;
             background: #fff;
             border: 3px solid #000;
             color: #000;
-            padding: 10px 15px;
-            width: 180px;
+            padding: 12px;
+            width: 190px;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            line-height: 1.3;
             cursor: pointer;
             position: relative;
             box-shadow: 4px 4px 0 #000;
-            transition: all 0.1s;
+            transition: all 0.15s;
             user-select: none;
         }
 
         .magnet:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 7px 7px 0 var(--accent);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--accent);
         }
 
-        .magnet:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #000;
+        .magnet.active {
+            background-color: #000;
+            color: #fff;
+            box-shadow: 0 0 0 #000;
+            transform: translate(4px, 4px);
         }
 
         .magnet-title {
             display: block;
-            margin-bottom: 4px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 900;
-            border-bottom: 2px solid #000;
-            padding-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .magnet-desc {
+            font-size: 0.7rem;
             font-weight: 700;
-            color: #333;
+            opacity: 0.8;
         }
 
         /* BOTTOM TEXT SECTION */
         .text-zone {
-            flex: 1;
-            padding: 3rem 5%;
-            background: #ffffff;
-            position: relative;
+            padding: 4rem 10%;
+            background: #fff;
             z-index: 2;
         }
 
-        .text-zone::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 12px;
-            background: repeating-linear-gradient(45deg, #000, #000 10px, transparent 10px, transparent 20px);
-        }
-
         .main-title {
-            font-family: 'Arial Black', Impact, sans-serif;
-            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            font-family: 'Arial Black', sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem);
             color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: -2px;
-            margin-bottom: 2.5rem;
-            text-shadow: 4px 4px 0 #000;
             text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 5px 5px 0 #000;
         }
 
         .desc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .desc-col {
-            background: #fff;
             padding: 2rem;
             border: 4px solid #000;
-            border-left: 12px solid var(--accent);
             box-shadow: 8px 8px 0 #000;
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .desc-col:hover {
-            transform: translate(-4px, -4px);
-            box-shadow: 12px 12px 0 var(--accent);
-        }
+        /* MOBILE OVERRIDES */
+        @media (max-width: 850px) {
+            .interactive-zone {
+                height: auto;
+                min-height: 100vh;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
 
-        .desc-col h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #000;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            border-bottom: 3px solid #000;
-            padding-bottom: 5px;
-            display: inline-block;
-        }
+            .center-photo {
+                position: relative;
+                height: 40vh;
+                transform: none;
+                left: auto;
+                top: auto;
+                margin-bottom: 20px;
+            }
 
-        .desc-col p {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #111;
-            font-weight: 700;
-        }
+            #space {
+                top: 25vh; /* Środek orbity na telefonie */
+            }
 
-        /* Responsive fixes */
-        @media (max-width: 768px) {
-            .magnet { width: 140px; font-size: 0.7rem; padding: 8px; }
-            .magnet-title { font-size: 0.85rem; }
-            .tile { min-width: 45px; min-height: 45px; }
-            .desc-grid { gap: 1.5rem; }
-            .text-zone { padding: 2rem 5%; }
-            .center-photo { height: 50vh; }
+            .magnets-container {
+                position: relative;
+                height: auto;
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                padding: 20px;
+                background: #f9f9f9;
+                border-top: 4px solid #000;
+            }
+
+            .magnets-right { align-items: center; }
+
+            .magnet {
+                width: calc(50% - 20px);
+                min-width: 150px;
+                padding: 8px;
+            }
+            
+            .tile {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- INTERACTIVE 3D ZONE -->
     <div class="interactive-zone" id="zone">
-        
-        <!-- Left Magnets -->
-        <div class="magnets-container magnets-left" id="m-left"></div>
-
-        <!-- Center Photo Container -->
+        <!-- Photo stays in the middle -->
         <img src="https://rad-crisp-9a2f5d.netlify.app/12.png" alt="Stanisław Jasiński" class="center-photo">
-
-        <!-- 3D Anchor for Tiles -->
+        
+        <!-- Tiles container -->
         <div id="space"></div>
 
-        <!-- Right Magnets -->
+        <!-- Magnet menus -->
+        <div class="magnets-container magnets-left" id="m-left"></div>
         <div class="magnets-container magnets-right" id="m-right"></div>
-
     </div>
 
-    <!-- TEXT ZONE -->
     <div class="text-zone">
         <h1 class="main-title">STANISŁAW JASIŃSKI</h1>
-        
         <div class="desc-grid">
             <div class="desc-col">
-                <h3>[1] AUTOMATYZACJA & KOD</h3>
-                <p>Obecnie koncentruję się na kompleksowym wdrażaniu automatyzacji procesów firmowych z wykorzystaniem sztucznej inteligencji oraz klasycznego kodu. Każde działanie zawsze poprzedzam wnikliwą analizą, aby zidentyfikować te aspekty biznesu, w których automatyzacja zagwarantuje pewny i najwyższy zwrot z inwestycji.</p>
+                <h3>[1] AUTOMATYZACJA</h3>
+                <p>Wdrażanie AI i kodu w procesy biznesowe. Analiza rentowności i optymalizacja czasu pracy.</p>
             </div>
-            
             <div class="desc-col">
-                <h3>[2] ODZYSKIWANIE ŚRODKÓW</h3>
-                <p>Drugi kluczowy filar mojej działalności to skuteczne odzyskiwanie pieniędzy z wadliwych umów kredytowych. Działania te prowadzę w ścisłej współpracy z Pro-Bankingiem.</p>
+                <h3>[2] ODZYSKIWANIE</h3>
+                <p>Skuteczna walka o zwrot środków z wadliwych umów kredytowych (Pro-Banking).</p>
             </div>
-            
             <div class="desc-col">
-                <h3>[3] SZERSZA WSPÓŁPRACA</h3>
-                <p>Jeżeli spotkaliśmy się na żywo i otrzymałeś moją wizytówkę, być może rozmawialiśmy o innej formie wsparcia. Posiadam bogate, interdyscyplinarne doświadczenie – od organizacji koncertów i turniejów, po copywriting, marketing, działania SEO oraz tworzenie stron WWW. Jestem otwarty na nieszablonowe formy kooperacji.</p>
+                <h3>[3] KREATYWNOŚĆ</h3>
+                <p>Marketing, SEO, WWW i organizacja eventów. Interdyscyplinarne podejście do wyzwań.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // --- SVG ICONS (Brutalist paths) ---
         const icons = {
             ig: `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>`,
             fb: `<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
@@ -283,25 +271,21 @@
             phone: `<svg viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.792c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.82c-2.106 1.039-8.153 6.229-2.78 16.666 5.373 10.437 13.064 7.202 14.384 5.955z"/></svg>`
         };
 
-        // --- DATA ---
         const config = [
-            { id: 'ig-priv', side: 'left',  type: 'ig',    title: 'IG Prywatny', desc: 'Życie prywatne', url: 'https://www.instagram.com/stanis1aw_jasinski?igsh=dG45dDBpdjN6d2p3', color: '#e1306c', textCol: '#fff' },
-            { id: 'fb-aiteka', side: 'left',  type: 'fb',    title: 'FB Aiteka',   desc: 'Wiedza i AI', url: 'https://www.facebook.com/share/18S9F5wMut/', color: '#1877f2', textCol: '#fff' },
-            { id: 'fb-priv', side: 'left',  type: 'fb',    title: 'FB Prywatny', desc: 'Kontakt na FB', url: 'https://www.facebook.com/share/1CCdgg8s8W/', color: '#333333', textCol: '#fff' },
-            { id: 'mail-pro', side: 'right', type: 'mail',  title: 'Kredyty',     desc: 'Odzyskaj pieniądze', url: 'mailto:s.jasinski@pro-banking.pl', color: '#cc0000', textCol: '#fff' },
-            { id: 'mail-gen', side: 'right', type: 'mail',  title: 'Mail Ogólny', desc: 'Inne sprawy', url: 'mailto:sjasinski727@gmail.com', color: '#888', textCol: '#fff' },
-            { id: 'mail-ai',  side: 'right', type: 'mail',  title: 'Mail Aiteka', desc: 'Automatyzacje B2B', url: 'mailto:aitekatech@gmail.com', color: '#ffcc00', textCol: '#000' },
-            { id: 'phone',    side: 'right', type: 'phone', title: 'Telefon',     desc: '577 707 827', url: 'tel:577707827', color: '#00cc22', textCol: '#fff' }
+            { id: 'ig-priv', side: 'left',  type: 'ig',    title: 'Instagram', desc: 'Prywatnie', url: 'https://www.instagram.com/stanis1aw_jasinski?igsh=dG45dDBpdjN6d2p3', color: '#e1306c', textCol: '#fff' },
+            { id: 'fb-aiteka', side: 'left',  type: 'fb',    title: 'Aiteka',   desc: 'Wiedza AI', url: 'https://www.facebook.com/share/18S9F5wMut/', color: '#1877f2', textCol: '#fff' },
+            { id: 'fb-priv', side: 'left',  type: 'fb',    title: 'Facebook', desc: 'Kontakt', url: 'https://www.facebook.com/share/1CCdgg8s8W/', color: '#333', textCol: '#fff' },
+            { id: 'mail-pro', side: 'right', type: 'mail',  title: 'Kredyty',  desc: 'Pro-Banking', url: 'mailto:s.jasinski@pro-banking.pl', color: '#cc0000', textCol: '#fff' },
+            { id: 'mail-ai',  side: 'right', type: 'mail',  title: 'B2B / AI',  desc: 'Aiteka Tech', url: 'mailto:aitekatech@gmail.com', color: '#ffcc00', textCol: '#000' },
+            { id: 'phone',    side: 'right', type: 'phone', title: 'Telefon',  desc: 'Zadzwoń do mnie', url: 'tel:577707827', color: '#00cc22', textCol: '#fff' }
         ];
 
         const space = document.getElementById('space');
         const mLeft = document.getElementById('m-left');
         const mRight = document.getElementById('m-right');
-        
         let tilesData = [];
 
         config.forEach((item) => {
-            // Magnet
             const magnet = document.createElement('div');
             magnet.className = 'magnet';
             magnet.style.borderLeft = `8px solid ${item.color}`;
@@ -309,7 +293,6 @@
             if (item.side === 'left') mLeft.appendChild(magnet);
             else mRight.appendChild(magnet);
 
-            // Tile
             const tile = document.createElement('a');
             tile.className = 'tile';
             tile.href = item.url;
@@ -319,34 +302,41 @@
             tile.style.color = item.textCol;
             space.appendChild(tile);
 
-            const randomPhase = Math.random() * Math.PI * 2;
+            const phase = Math.random() * Math.PI * 2;
             tilesData.push({
                 id: item.id,
                 magnetEl: magnet,
                 tileEl: tile,
                 state: 'orbit',
-                angle: randomPhase,
-                speed: 0.007 + (Math.random() * 0.01),
-                radiusX: 180 + (Math.random() * 150),
-                radiusZ: 150 + (Math.random() * 100),
-                tiltAmp: (Math.random() - 0.5) * 350,
-                tiltOffset: randomPhase,
-                cx: 0, cy: 0, cScale: 1,
+                angle: phase,
+                speed: 0.005 + Math.random() * 0.008,
+                radiusX: 200 + Math.random() * 180,
+                radiusZ: 180 + Math.random() * 120,
+                tiltY: (Math.random() - 0.5) * 200,
+                cx: 0, cy: 0, cz: 0,
                 side: item.side
             });
 
-            magnet.addEventListener('click', () => {
+            magnet.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const data = tilesData.find(d => d.id === item.id);
-                if (data.state === 'orbit' || data.state === 'returning') {
-                    data.state = 'flying';
-                    tilesData.forEach(d => { if(d !== data && d.state === 'docked') d.state = 'returning'; });
-                } else if (data.state === 'docked') {
+                if (data.state === 'docked') {
                     data.state = 'returning';
+                    magnet.classList.remove('active');
+                } else {
+                    tilesData.forEach(d => { 
+                        if(d.state === 'docked') {
+                            d.state = 'returning';
+                            d.magnetEl.classList.remove('active');
+                        }
+                    });
+                    data.state = 'flying';
+                    magnet.classList.add('active');
                 }
             });
         });
 
-        const focalLength = 800;
+        const focalLength = 1000;
 
         function animate() {
             const spaceRect = space.getBoundingClientRect();
@@ -354,65 +344,66 @@
             const spaceCenterY = spaceRect.top + spaceRect.height / 2;
 
             tilesData.forEach(d => {
-                if (d.state === 'orbit') {
+                if (d.state === 'orbit' || d.state === 'returning') {
                     d.angle += d.speed;
-                    const rawX = Math.cos(d.angle) * d.radiusX;
-                    const rawZ = Math.sin(d.angle) * d.radiusZ;
-                    const rawY = Math.sin(d.angle + d.tiltOffset) * d.tiltAmp;
+                    const tx = Math.cos(d.angle) * d.radiusX;
+                    const tz = Math.sin(d.angle) * d.radiusZ;
+                    const ty = Math.sin(d.angle) * d.tiltY;
 
-                    const scale = focalLength / (focalLength - rawZ);
-                    d.cx = rawX * scale;
-                    d.cy = rawY * scale;
-                    d.cScale = scale;
-
-                    // Warstwy względem zdjęcia (z-index 5)
-                    d.tileEl.style.zIndex = rawZ < 0 ? 4 : 10;
-                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(${d.cScale})`;
-                    d.tileEl.style.filter = rawZ < 0 ? 'brightness(0.4) blur(1px)' : 'brightness(1) blur(0)';
-                    d.tileEl.style.pointerEvents = 'none';
-
-                } else if (d.state === 'flying' || d.state === 'docked' || d.state === 'returning') {
-                    let targetX, targetY, targetScale;
-
-                    if (d.state === 'flying' || d.state === 'docked') {
-                        const magRect = d.magnetEl.getBoundingClientRect();
-                        targetY = (magRect.top + magRect.height/2) - spaceCenterY;
-                        if(d.side === 'left') {
-                            targetX = (magRect.right + 35) - spaceCenterX;
-                        } else {
-                            targetX = (magRect.left - 35) - spaceCenterX;
-                        }
-                        targetScale = 1;
+                    if (d.state === 'orbit') {
+                        d.cx = tx; d.cy = ty; d.cz = tz;
                     } else {
-                        const rawX = Math.cos(d.angle) * d.radiusX;
-                        const rawZ = Math.sin(d.angle) * d.radiusZ;
-                        const rawY = Math.sin(d.angle + d.tiltOffset) * d.tiltAmp;
-                        targetScale = focalLength / (focalLength - rawZ);
-                        targetX = rawX * targetScale;
-                        targetY = rawY * targetScale;
-                        d.angle += d.speed; 
+                        d.cx += (tx - d.cx) * 0.08;
+                        d.cy += (ty - d.cy) * 0.08;
+                        d.cz += (tz - d.cz) * 0.08;
+                        if (Math.hypot(tx-d.cx, ty-d.cy) < 5) d.state = 'orbit';
                     }
 
-                    d.cx += (targetX - d.cx) * 0.12;
-                    d.cy += (targetY - d.cy) * 0.12;
-                    d.cScale += (targetScale - d.cScale) * 0.12;
+                    const scale = focalLength / (focalLength - d.cz);
+                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx * scale}px, ${d.cy * scale}px) scale(${scale})`;
+                    d.tileEl.style.zIndex = d.cz < 0 ? 4 : 15;
+                    d.tileEl.style.filter = d.cz < -50 ? `brightness(${0.5 + scale*0.2}) blur(1px)` : 'brightness(1) blur(0)';
+                    d.tileEl.style.pointerEvents = 'none';
 
-                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(${d.cScale})`;
-                    d.tileEl.style.zIndex = 50; 
-                    d.tileEl.style.filter = 'brightness(1) blur(0)';
+                } else if (d.state === 'flying' || d.state === 'docked') {
+                    const magRect = d.magnetEl.getBoundingClientRect();
+                    const isMobile = window.innerWidth <= 850;
+                    
+                    let targetX, targetY;
+                    if (isMobile) {
+                        targetX = (magRect.left + magRect.width/2) - spaceCenterX;
+                        targetY = (magRect.top + magRect.height/2) - spaceCenterY;
+                    } else {
+                        targetY = (magRect.top + magRect.height/2) - spaceCenterY;
+                        targetX = d.side === 'left' ? (magRect.right + 45) - spaceCenterX : (magRect.left - 45) - spaceCenterX;
+                    }
 
-                    const dist = Math.hypot(targetX - d.cx, targetY - d.cy);
-                    if (d.state === 'flying' && dist < 2) {
+                    d.cx += (targetX - d.cx) * 0.15;
+                    d.cy += (targetY - d.cy) * 0.15;
+                    
+                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(1.1)`;
+                    d.tileEl.style.zIndex = 200;
+                    d.tileEl.style.filter = 'brightness(1.1) drop-shadow(0 0 15px white)';
+                    d.tileEl.style.pointerEvents = 'auto';
+
+                    if (d.state === 'flying' && Math.hypot(targetX - d.cx, targetY - d.cy) < 2) {
                         d.state = 'docked';
-                        d.tileEl.style.pointerEvents = 'auto';
-                    } else if (d.state === 'returning' && dist < 5) {
-                        d.state = 'orbit';
                     }
                 }
             });
             requestAnimationFrame(animate);
         }
         animate();
+
+        // Close docked tile if clicking anywhere else
+        window.addEventListener('click', () => {
+            tilesData.forEach(d => {
+                if (d.state === 'docked') {
+                    d.state = 'returning';
+                    d.magnetEl.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
