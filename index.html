@@ -42,7 +42,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background-color: #ffffff;
+            z-index: 1;
         }
 
         /* 3D SPACE ANCHOR */
@@ -52,6 +53,7 @@
             top: 50%;
             width: 0;
             height: 0;
+            perspective: 1000px;
         }
 
         /* CENTER PHOTO */
@@ -59,10 +61,13 @@
             position: absolute;
             height: 60vh;
             max-height: 100%;
+            left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
             z-index: 5; 
             filter: drop-shadow(10px 10px 0px var(--accent));
             pointer-events: none; 
+            display: block;
         }
 
         /* ORBITING TILES */
@@ -90,7 +95,7 @@
 
         .tile:hover {
             box-shadow: 6px 6px 0 var(--accent);
-            transform: scale(1.1) !important; /* Drobny override hovera przy zadokowaniu */
+            transform: scale(1.1) !important; 
         }
 
         /* MAGNETS */
@@ -102,7 +107,7 @@
             flex-direction: column;
             justify-content: space-evenly;
             padding: 15px;
-            z-index: 1000; /* Zawsze na wierzchu */
+            z-index: 100; 
             pointer-events: none; 
         }
 
@@ -156,6 +161,7 @@
             padding: 3rem 5%;
             background: #ffffff;
             position: relative;
+            z-index: 2;
         }
 
         .text-zone::before {
@@ -223,6 +229,7 @@
             .tile { min-width: 45px; min-height: 45px; }
             .desc-grid { gap: 1.5rem; }
             .text-zone { padding: 2rem 5%; }
+            .center-photo { height: 50vh; }
         }
     </style>
 </head>
@@ -234,12 +241,11 @@
         <!-- Left Magnets -->
         <div class="magnets-container magnets-left" id="m-left"></div>
 
-        <!-- 3D Anchor (Center point for math) -->
-        <div id="space">
-            <!-- Photo acts as the Z-index barrier -->
-            <img src="https://rad-crisp-9a2f5d.netlify.app/12.png" alt="Stanisław Jasiński" class="center-photo">
-            <!-- Tiles will be injected here via JS -->
-        </div>
+        <!-- Center Photo Container -->
+        <img src="https://rad-crisp-9a2f5d.netlify.app/12.png" alt="Stanisław Jasiński" class="center-photo">
+
+        <!-- 3D Anchor for Tiles -->
+        <div id="space"></div>
 
         <!-- Right Magnets -->
         <div class="magnets-container magnets-right" id="m-right"></div>
@@ -277,19 +283,17 @@
             phone: `<svg viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.792c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.82c-2.106 1.039-8.153 6.229-2.78 16.666 5.373 10.437 13.064 7.202 14.384 5.955z"/></svg>`
         };
 
-        // --- DATA STRUCTURE ---
-        // Kolory przystosowane pod jasny motyw
+        // --- DATA ---
         const config = [
             { id: 'ig-priv', side: 'left',  type: 'ig',    title: 'IG Prywatny', desc: 'Życie prywatne', url: 'https://www.instagram.com/stanis1aw_jasinski?igsh=dG45dDBpdjN6d2p3', color: '#e1306c', textCol: '#fff' },
             { id: 'fb-aiteka', side: 'left',  type: 'fb',    title: 'FB Aiteka',   desc: 'Wiedza i AI', url: 'https://www.facebook.com/share/18S9F5wMut/', color: '#1877f2', textCol: '#fff' },
             { id: 'fb-priv', side: 'left',  type: 'fb',    title: 'FB Prywatny', desc: 'Kontakt na FB', url: 'https://www.facebook.com/share/1CCdgg8s8W/', color: '#333333', textCol: '#fff' },
             { id: 'mail-pro', side: 'right', type: 'mail',  title: 'Kredyty',     desc: 'Odzyskaj pieniądze', url: 'mailto:s.jasinski@pro-banking.pl', color: '#cc0000', textCol: '#fff' },
-            { id: 'mail-gen', side: 'right', type: 'mail',  title: 'Mail Ogólny', desc: 'Inne sprawy', url: 'mailto:sjasinski727@gmail.com', color: '#ffffff', textCol: '#000' },
+            { id: 'mail-gen', side: 'right', type: 'mail',  title: 'Mail Ogólny', desc: 'Inne sprawy', url: 'mailto:sjasinski727@gmail.com', color: '#888', textCol: '#fff' },
             { id: 'mail-ai',  side: 'right', type: 'mail',  title: 'Mail Aiteka', desc: 'Automatyzacje B2B', url: 'mailto:aitekatech@gmail.com', color: '#ffcc00', textCol: '#000' },
             { id: 'phone',    side: 'right', type: 'phone', title: 'Telefon',     desc: '577 707 827', url: 'tel:577707827', color: '#00cc22', textCol: '#fff' }
         ];
 
-        // --- DOM ELEMENTS SETUP ---
         const space = document.getElementById('space');
         const mLeft = document.getElementById('m-left');
         const mRight = document.getElementById('m-right');
@@ -297,16 +301,15 @@
         let tilesData = [];
 
         config.forEach((item) => {
-            // 1. Create Magnet
+            // Magnet
             const magnet = document.createElement('div');
             magnet.className = 'magnet';
-            magnet.style.borderLeft = `8px solid ${item.color}`; // Gruba kolorowa krawędź boczna dla odróżnienia
+            magnet.style.borderLeft = `8px solid ${item.color}`;
             magnet.innerHTML = `<span class="magnet-title">${item.title}</span><span class="magnet-desc">${item.desc}</span>`;
-            
             if (item.side === 'left') mLeft.appendChild(magnet);
             else mRight.appendChild(magnet);
 
-            // 2. Create Tile
+            // Tile
             const tile = document.createElement('a');
             tile.className = 'tile';
             tile.href = item.url;
@@ -316,35 +319,26 @@
             tile.style.color = item.textCol;
             space.appendChild(tile);
 
-            // 3. Register Data for Animation
             const randomPhase = Math.random() * Math.PI * 2;
             tilesData.push({
                 id: item.id,
                 magnetEl: magnet,
                 tileEl: tile,
-                state: 'orbit', // 'orbit', 'flying', 'docked', 'returning'
-                
-                // Orbit parameters
+                state: 'orbit',
                 angle: randomPhase,
-                speed: 0.008 + (Math.random() * 0.01),
+                speed: 0.007 + (Math.random() * 0.01),
                 radiusX: 180 + (Math.random() * 150),
                 radiusZ: 150 + (Math.random() * 100),
                 tiltAmp: (Math.random() - 0.5) * 350,
                 tiltOffset: randomPhase,
-
-                // Current values for Lerp
                 cx: 0, cy: 0, cScale: 1,
-
                 side: item.side
             });
 
-            // 4. Magnet Click Logic
-            magnet.addEventListener('click', (e) => {
+            magnet.addEventListener('click', () => {
                 const data = tilesData.find(d => d.id === item.id);
-                
                 if (data.state === 'orbit' || data.state === 'returning') {
                     data.state = 'flying';
-                    // Zawróć inne zadokowane
                     tilesData.forEach(d => { if(d !== data && d.state === 'docked') d.state = 'returning'; });
                 } else if (data.state === 'docked') {
                     data.state = 'returning';
@@ -352,22 +346,16 @@
             });
         });
 
-        // --- 3D ENGINE & ANIMATION LOOP ---
         const focalLength = 800;
 
         function animate() {
-            // Get boundaries to calculate exact offsets
             const spaceRect = space.getBoundingClientRect();
-            // Środek wirtualnej przestrzeni
             const spaceCenterX = spaceRect.left + spaceRect.width / 2;
             const spaceCenterY = spaceRect.top + spaceRect.height / 2;
 
             tilesData.forEach(d => {
-                
                 if (d.state === 'orbit') {
-                    // --- ORBIT MATH ---
                     d.angle += d.speed;
-                    
                     const rawX = Math.cos(d.angle) * d.radiusX;
                     const rawZ = Math.sin(d.angle) * d.radiusZ;
                     const rawY = Math.sin(d.angle + d.tiltOffset) * d.tiltAmp;
@@ -377,31 +365,25 @@
                     d.cy = rawY * scale;
                     d.cScale = scale;
 
-                    const zIndex = rawZ < 0 ? 1 : 10;
-                    
+                    // Warstwy względem zdjęcia (z-index 5)
+                    d.tileEl.style.zIndex = rawZ < 0 ? 4 : 10;
                     d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(${d.cScale})`;
-                    d.tileEl.style.zIndex = zIndex;
-                    d.tileEl.style.filter = rawZ < 0 ? 'brightness(0.3) blur(1px)' : 'brightness(1) blur(0)';
+                    d.tileEl.style.filter = rawZ < 0 ? 'brightness(0.4) blur(1px)' : 'brightness(1) blur(0)';
                     d.tileEl.style.pointerEvents = 'none';
 
                 } else if (d.state === 'flying' || d.state === 'docked' || d.state === 'returning') {
-                    
                     let targetX, targetY, targetScale;
 
                     if (d.state === 'flying' || d.state === 'docked') {
-                        // FIX BŁĘDU: Pozycja obliczana relatywnie do centrum strefy, nie do lewego górnego rogu!
                         const magRect = d.magnetEl.getBoundingClientRect();
-                        
                         targetY = (magRect.top + magRect.height/2) - spaceCenterY;
-                        
                         if(d.side === 'left') {
                             targetX = (magRect.right + 35) - spaceCenterX;
                         } else {
                             targetX = (magRect.left - 35) - spaceCenterX;
                         }
                         targetScale = 1;
-
-                    } else if (d.state === 'returning') {
+                    } else {
                         const rawX = Math.cos(d.angle) * d.radiusX;
                         const rawZ = Math.sin(d.angle) * d.radiusZ;
                         const rawY = Math.sin(d.angle + d.tiltOffset) * d.tiltAmp;
@@ -411,7 +393,6 @@
                         d.angle += d.speed; 
                     }
 
-                    // LERP Interpolation
                     d.cx += (targetX - d.cx) * 0.12;
                     d.cy += (targetY - d.cy) * 0.12;
                     d.cScale += (targetScale - d.cScale) * 0.12;
@@ -421,21 +402,16 @@
                     d.tileEl.style.filter = 'brightness(1) blur(0)';
 
                     const dist = Math.hypot(targetX - d.cx, targetY - d.cy);
-                    
                     if (d.state === 'flying' && dist < 2) {
                         d.state = 'docked';
-                        d.tileEl.style.pointerEvents = 'auto'; // Klikalne tylko gdy przyciągnięte
+                        d.tileEl.style.pointerEvents = 'auto';
                     } else if (d.state === 'returning' && dist < 5) {
                         d.state = 'orbit';
-                    } else if (d.state === 'flying' || d.state === 'returning') {
-                        d.tileEl.style.pointerEvents = 'none';
                     }
                 }
             });
-
             requestAnimationFrame(animate);
         }
-
         animate();
     </script>
 </body>
