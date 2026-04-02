@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stanisław Jasiński - Kontakt</title>
     <style>
         :root {
@@ -16,7 +16,8 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Arial Black', Gadget, sans-serif;
+            font-family: 'Arial Black', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -26,160 +27,228 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-image: radial-gradient(#eee 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* HEADER / PHOTO SECTION */
-        .header-zone {
+        /* INTERACTIVE ZONE */
+        .interactive-zone {
             position: relative;
-            height: 40vh; /* 1/3 wysokości + zapas */
+            height: 85vh;
             width: 100%;
-            background: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #fff;
             border-bottom: var(--border-width) solid #000;
             overflow: hidden;
         }
 
         .center-photo {
-            height: 90%;
+            height: 75vh;
             z-index: 5;
-            filter: drop-shadow(8px 8px 0px var(--accent));
+            filter: drop-shadow(15px 15px 0px var(--accent));
             user-select: none;
             pointer-events: none;
         }
 
-        /* 3D SPACE FOR FLOATING TILES */
+        /* 3D SPACE */
         #space {
             position: absolute;
             left: 50%;
             top: 50%;
             width: 0;
             height: 0;
-            perspective: 1000px;
+            perspective: 1200px;
             pointer-events: none;
+            z-index: 25;
         }
 
         .tile {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 75px;
+            height: 75px;
             display: flex;
             justify-content: center;
             align-items: center;
             border: 3px solid #000;
-            text-decoration: none;
-            cursor: pointer;
             box-shadow: 4px 4px 0 #000;
             background-color: #fff;
-            transition: background-color 0.2s, box-shadow 0.2s;
-            pointer-events: none; /* Only clickable when docked */
+            z-index: 30;
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
         .tile svg {
-            width: 50%;
-            height: 50%;
+            width: 55%;
+            height: 55%;
             fill: currentColor;
+            pointer-events: none;
         }
 
-        /* CONTACT SECTION */
-        .contact-zone {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            background: #f0f0f0;
-            border-bottom: var(--border-width) solid #000;
+        /* MAGNETS LAYOUT */
+        .magnets-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px;
+            z-index: 20;
         }
+
+        .magnets-left { left: 0; }
+        .magnets-right { right: 0; align-items: flex-end; }
 
         .magnet {
             background: #fff;
             border: 3px solid #000;
-            padding: 12px;
+            padding: 15px;
+            width: 230px;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 4px 4px 0 #000;
+            box-shadow: 6px 6px 0 #000;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
-            position: relative;
-            transition: 0.1s;
-            min-height: 70px;
-            justify-content: center;
+            text-decoration: none;
+            color: #000;
         }
 
-        .magnet:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #000;
+        .magnet:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 var(--accent);
         }
 
         .magnet.active {
             background-color: #000;
             color: #fff;
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 #000;
         }
 
-        .magnet-title { font-size: 0.8rem; font-weight: 900; margin-bottom: 2px; }
-        .magnet-desc { font-size: 0.65rem; font-family: 'Courier New', monospace; font-weight: bold; }
+        .magnet-title { font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
+        .magnet-desc { font-size: 0.75rem; font-family: 'Courier New', monospace; opacity: 0.8; font-weight: bold; }
 
-        /* TEXT CONTENT */
+        /* TEXT SECTION */
         .text-zone {
-            padding: 40px 20px;
+            padding: 80px 10%;
             background: #fff;
+            z-index: 10;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 10vw, 5rem);
             color: var(--accent);
             text-align: center;
-            margin-bottom: 30px;
-            text-shadow: 3px 3px 0 #000;
+            margin-bottom: 60px;
+            text-shadow: 6px 6px 0 #000;
+            text-transform: uppercase;
+        }
+
+        .desc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
         }
 
         .desc-col {
-            margin-bottom: 25px;
-            padding: 20px;
-            border: 3px solid #000;
-            box-shadow: 6px 6px 0 #000;
+            padding: 35px;
+            border: 4px solid #000;
+            box-shadow: 10px 10px 0 #000;
+            background: #fff;
         }
 
-        .desc-col h3 { font-size: 1.1rem; margin-bottom: 10px; border-bottom: 2px solid var(--accent); display: inline-block; }
-        .desc-col p { font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.5; font-weight: bold; }
+        .desc-col h3 { 
+            font-size: 1.4rem; 
+            margin-bottom: 15px; 
+            background: var(--accent); 
+            color: #fff; 
+            display: inline-block; 
+            padding: 5px 15px;
+        }
+        
+        .desc-col p { 
+            font-family: 'Courier New', monospace; 
+            font-size: 1rem; 
+            line-height: 1.6; 
+            font-weight: bold; 
+        }
 
-        /* RESPONSIVE */
-        @media (max-width: 600px) {
-            .contact-zone {
-                grid-template-columns: 1fr;
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 900px) {
+            .interactive-zone {
+                height: auto;
+                min-height: 100vh;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-bottom: 60px;
             }
-            .header-zone {
-                height: 33vh;
+
+            .center-photo {
+                height: 40vh;
+                margin: 40px 0;
             }
-            .main-title { font-size: 1.8rem; }
+
+            #space {
+                top: 20vh;
+            }
+
+            .magnets-container {
+                position: relative;
+                height: auto;
+                width: 100%;
+                padding: 20px 50px; /* Szeroka strefa boczna do scrollowania */
+                gap: 20px;
+                background: #fdfdfd;
+                border-top: 4px solid #000;
+            }
+
+            .magnet {
+                width: 100%;
+                max-width: none;
+                padding: 20px;
+            }
+            
+            .tile {
+                width: 70px;
+                height: 70px;
+            }
+
+            .magnets-right { align-items: stretch; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-zone">
+    <div class="interactive-zone">
         <img src="https://rad-crisp-9a2f5d.netlify.app/12.png" alt="Stanisław Jasiński" class="center-photo">
         <div id="space"></div>
-    </div>
 
-    <div class="contact-zone" id="magnets-grid">
-        <!-- Przycisków przyciągających kafelki -->
+        <div class="magnets-container magnets-left" id="m-left"></div>
+        <div class="magnets-container magnets-right" id="m-right"></div>
     </div>
 
     <div class="text-zone">
         <h1 class="main-title">STANISŁAW JASIŃSKI</h1>
-        <div class="desc-col">
-            <h3>AUTOMATYZACJA</h3>
-            <p>Optymalizacja procesów biznesowych za pomocą AI. Oszczędność czasu i realny wzrost marży.</p>
-        </div>
-        <div class="desc-col">
-            <h3>KREDYTY</h3>
-            <p>Specjalista ds. odzyskiwania środków z wadliwych umów bankowych. Współpraca z Pro-Banking.</p>
-        </div>
-        <div class="desc-col">
-            <h3>MARKETING & WWW</h3>
-            <p>Kompleksowe wsparcie wizerunkowe, SEO oraz tworzenie nowoczesnych stron internetowych.</p>
+        <div class="desc-grid">
+            <div class="desc-col">
+                <h3>[1] AUTOMATYZACJA</h3>
+                <p>Wdrażanie rozwiązań opartych o Sztuczną Inteligencję (AI) oraz dedykowanego kodu w realne procesy biznesowe. Analizuję rentowność i optymalizuję czas pracy, zamieniając powtarzalne czynności w autonomiczne systemy.</p>
+            </div>
+            <div class="desc-col">
+                <h3>[2] ODZYSKIWANIE</h3>
+                <p>Jako specjalista w Pro-Banking, prowadzę skuteczną walkę o zwrot środków z wadliwych umów kredytowych. Pomagam odzyskać sprawiedliwość i pieniądze w starciu z dużymi instytucjami finansowymi.</p>
+            </div>
+            <div class="desc-col">
+                <h3>[3] INNE PROJEKTY</h3>
+                <p>Kreatywność, SEO czy strony internetowe to nie jest coś, czym zajmuję się na co dzień tak jak powyższymi tematami. Jednak być może o tym rozmawialiśmy, bo mam w tych obszarach bardzo duże doświadczenie. Jeśli potrzebujesz wsparcia w czymś innym – śmiało pytaj, prawdopodobnie mogę Ci pomóc.</p>
+            </div>
         </div>
     </div>
 
@@ -192,59 +261,63 @@
         };
 
         const config = [
-            { id: 'ig', type: 'ig', title: 'Instagram', desc: 'Prywatnie', url: 'https://www.instagram.com/stanis1aw_jasinski?igsh=dG45dDBpdjN6d2p3', color: '#e1306c' },
-            { id: 'fb', type: 'fb', title: 'Aiteka', desc: 'Wiedza AI', url: 'https://www.facebook.com/share/18S9F5wMut/', color: '#1877f2' },
-            { id: 'mail1', type: 'mail', title: 'Kredyty', desc: 'Pro-Banking', url: 'mailto:s.jasinski@pro-banking.pl', color: '#cc0000' },
-            { id: 'mail2', type: 'mail', title: 'AI Tech', desc: 'B2B Kontakt', url: 'mailto:aitekatech@gmail.com', color: '#ffcc00' },
-            { id: 'tel', type: 'phone', title: 'Telefon', desc: 'Zadzwoń', url: 'tel:577707827', color: '#00cc22' },
-            { id: 'fb2', type: 'fb', title: 'Facebook', desc: 'Prywatny', url: 'https://www.facebook.com/share/1CCdgg8s8W/', color: '#333' }
+            { id: 'ig', type: 'ig', side: 'left', title: 'Instagram', desc: 'Prywatnie', url: 'https://www.instagram.com/stanis1aw_jasinski?igsh=dG45dDBpdjN6d2p3', color: '#e1306c' },
+            { id: 'fb', type: 'fb', side: 'left', title: 'Aiteka', desc: 'Wiedza AI', url: 'https://www.facebook.com/share/18S9F5wMut/', color: '#1877f2' },
+            { id: 'fb-priv', type: 'fb', side: 'left', title: 'Facebook', desc: 'Mój profil', url: 'https://www.facebook.com/share/1CCdgg8s8W/', color: '#333' },
+            { id: 'mail1', type: 'mail', side: 'right', title: 'Kredyty', desc: 's.jasinski@pro-banking.pl', url: 'mailto:s.jasinski@pro-banking.pl', color: '#cc0000' },
+            { id: 'mail2', type: 'mail', side: 'right', title: 'AI Tech', desc: 'aitekatech@gmail.com', url: 'mailto:aitekatech@gmail.com', color: '#ffcc00' },
+            { id: 'tel', type: 'phone', side: 'right', title: 'Telefon', desc: '577 707 827', url: 'tel:577707827', color: '#00cc22' }
         ];
 
-        const grid = document.getElementById('magnets-grid');
+        const mLeft = document.getElementById('m-left');
+        const mRight = document.getElementById('m-right');
         const space = document.getElementById('space');
         let tilesData = [];
 
         config.forEach(item => {
-            // Magnet button
             const magnet = document.createElement('div');
             magnet.className = 'magnet';
             magnet.style.borderLeft = `8px solid ${item.color}`;
             magnet.innerHTML = `<span class="magnet-title">${item.title}</span><span class="magnet-desc">${item.desc}</span>`;
-            grid.appendChild(magnet);
+            if (item.side === 'left') mLeft.appendChild(magnet);
+            else mRight.appendChild(magnet);
 
-            // Floating tile
-            const tile = document.createElement('div');
+            const tile = document.createElement('a');
             tile.className = 'tile';
+            tile.href = item.url;
             tile.innerHTML = icons[item.type];
             tile.style.backgroundColor = item.color;
             tile.style.color = item.color === '#ffcc00' ? '#000' : '#fff';
+            // Zabezpieczenie dla mailto i tel
+            if(item.url.startsWith('mailto:') || item.url.startsWith('tel:')) {
+                tile.target = "_self";
+            } else {
+                tile.target = "_blank";
+            }
             space.appendChild(tile);
 
             const phase = Math.random() * Math.PI * 2;
             const data = {
                 id: item.id,
-                url: item.url,
                 magnetEl: magnet,
                 tileEl: tile,
                 state: 'orbit',
                 angle: phase,
-                speed: 0.005 + Math.random() * 0.01,
-                radiusX: 150 + Math.random() * 150,
-                radiusZ: 100 + Math.random() * 100,
-                tiltY: (Math.random() - 0.5) * 150,
-                cx: 0, cy: 0, cz: 0
+                speed: 0.004 + Math.random() * 0.006,
+                radiusX: 200 + Math.random() * 120,
+                radiusZ: 140 + Math.random() * 80,
+                tiltY: (Math.random() - 0.5) * 180,
+                cx: 0, cy: 0, cz: 0,
+                side: item.side
             };
             tilesData.push(data);
 
-            const triggerAction = (e) => {
-                e.preventDefault();
+            magnet.onclick = (e) => {
                 e.stopPropagation();
-                
                 if (data.state === 'docked') {
-                    // Jeśli już zadokowany, kliknięcie przenosi do linku
-                    window.location.href = data.url;
+                    // Pozwól na domyślną akcję magnesu jako linku jeśli potrzeba, 
+                    // ale tutaj tile obsługuje nawigację
                 } else {
-                    // Resetuj inne kafelki
                     tilesData.forEach(d => {
                         if (d.state === 'docked' || d.state === 'flying') {
                             d.state = 'returning';
@@ -256,19 +329,20 @@
                 }
             };
 
-            magnet.addEventListener('click', triggerAction);
-            magnet.addEventListener('touchstart', (e) => {
-                // Zapobiega podwójnym kliknięciom na mobile
-                triggerAction(e);
-            }, {passive: false});
+            // Tile sam w sobie jest <a>, więc kliknięcie zadziała natywnie jeśli state === docked
+            tile.onclick = (e) => {
+                if (data.state !== 'docked') {
+                    e.preventDefault();
+                }
+            };
         });
 
-        const focalLength = 800;
+        const focalLength = 1000;
 
         function animate() {
             const spaceRect = space.getBoundingClientRect();
-            const spaceCenterX = spaceRect.left;
-            const spaceCenterY = spaceRect.top;
+            const spaceX = spaceRect.left;
+            const spaceY = spaceRect.top;
 
             tilesData.forEach(d => {
                 if (d.state === 'orbit' || d.state === 'returning') {
@@ -280,32 +354,43 @@
                     if (d.state === 'orbit') {
                         d.cx = tx; d.cy = ty; d.cz = tz;
                     } else {
-                        d.cx += (tx - d.cx) * 0.1;
-                        d.cy += (ty - d.cy) * 0.1;
-                        d.cz += (tz - d.cz) * 0.1;
+                        d.cx += (tx - d.cx) * 0.08;
+                        d.cy += (ty - d.cy) * 0.08;
+                        d.cz += (tz - d.cz) * 0.08;
                         if (Math.hypot(tx-d.cx, ty-d.cy) < 5) d.state = 'orbit';
                     }
 
                     const scale = focalLength / (focalLength - d.cz);
                     d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx * scale}px, ${d.cy * scale}px) scale(${scale})`;
-                    d.tileEl.style.zIndex = d.cz < 0 ? 1 : 10;
-                    d.tileEl.style.opacity = 1;
+                    d.tileEl.style.zIndex = d.cz < 0 ? 5 : 15;
+                    d.tileEl.style.opacity = 0.85;
                     d.tileEl.style.pointerEvents = 'none';
+                    d.tileEl.style.filter = d.cz < 0 ? 'brightness(0.5)' : 'brightness(1)';
 
                 } else if (d.state === 'flying' || d.state === 'docked') {
                     const mRect = d.magnetEl.getBoundingClientRect();
-                    const targetX = (mRect.left + mRect.width/2) - spaceCenterX;
-                    const targetY = (mRect.top + mRect.height/2) - spaceCenterY;
+                    const isMobile = window.innerWidth <= 900;
+                    
+                    let targetX, targetY;
+                    if (isMobile) {
+                        targetX = (mRect.left + mRect.width/2) - spaceX;
+                        targetY = (mRect.top + mRect.height/2) - spaceY;
+                    } else {
+                        targetY = (mRect.top + mRect.height/2) - spaceY;
+                        targetX = d.side === 'left' ? (mRect.right + 60) - spaceX : (mRect.left - 60) - spaceX;
+                    }
 
                     d.cx += (targetX - d.cx) * 0.15;
                     d.cy += (targetY - d.cy) * 0.15;
-                    d.cz += (0 - d.cz) * 0.15;
+                    d.cz += (150 - d.cz) * 0.15;
 
-                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(1.1)`;
+                    d.tileEl.style.transform = `translate(-50%, -50%) translate(${d.cx}px, ${d.cy}px) scale(1.15)`;
                     d.tileEl.style.zIndex = 1000;
-                    d.tileEl.style.pointerEvents = 'auto'; // Klikalny w locie i po zadokowaniu
+                    d.tileEl.style.opacity = 1;
+                    d.tileEl.style.pointerEvents = 'auto';
+                    d.tileEl.style.filter = 'brightness(1.1) drop-shadow(0 0 15px rgba(255,255,255,0.9))';
 
-                    if (Math.hypot(targetX - d.cx, targetY - d.cy) < 2) {
+                    if (Math.hypot(targetX - d.cx, targetY - d.cy) < 1) {
                         d.state = 'docked';
                     }
                 }
@@ -313,14 +398,16 @@
             requestAnimationFrame(animate);
         }
         
-        // Dodatkowe wsparcie dla klikania bezpośrednio w kafelki po zadokowaniu
-        tilesData.forEach(d => {
-            d.tileEl.onclick = (e) => {
-                if (d.state === 'docked') {
-                    window.location.href = d.url;
-                }
-            };
-        });
+        window.onclick = (e) => {
+            if (!e.target.closest('.magnet') && !e.target.closest('.tile')) {
+                tilesData.forEach(d => {
+                    if (d.state === 'docked' || d.state === 'flying') {
+                        d.state = 'returning';
+                        d.magnetEl.classList.remove('active');
+                    }
+                });
+            }
+        };
 
         animate();
     </script>
